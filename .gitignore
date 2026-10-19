@@ -1,0 +1,12 @@
+# Never commit lead data or contact lists
+*.csv
+*.db
+*.sqlite*
+*.json
+*.xlsx
+leads/
+lead*/
+batches/
+*.log
+.env*
+.DS_Store
