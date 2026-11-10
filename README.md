@@ -9,6 +9,9 @@ index.html               landing page (not a directory listing)
 demo-roofing-fake/       demo preview (made-up business)
 demo-plumbing-fake/      demo preview (made-up business)
 demo-hvac-fake/          demo preview (made-up business)
+fiverr-mobile-fix/       Fiverr portfolio sample (fictional café, mobile before/after)
+fiverr-booking-bot/      Fiverr portfolio sample (fictional salon booking chatbot)
+fiverr-automation/       Fiverr portfolio sample (form to Sheets + email demo)
 _index/                  thumbnails + font for the landing page
 .nojekyll                serve files as-is (no Jekyll build)
 robots.txt               Disallow: /

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Sample: mobile-friendly website fix — Willow &amp; Bean Café</title>
+<style>
+  :root { --ink:#161616; --muted:#555; --bg:#f4f1ec; --line:#ddd6cc; --bad:#8a2b15; --good:#215c3a; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family: system-ui, -apple-system, Segoe UI, sans-serif; background:var(--bg); color:var(--ink); }
+  header { padding:28px 20px 10px; max-width:1100px; margin:auto; }
+  h1 { font-size:clamp(1.6rem, 4vw, 2.2rem); margin:0 0 8px; }
+  p { color:var(--muted); }
+  .pair { display:grid; gap:18px; padding:10px 20px 40px; max-width:1100px; margin:auto; }
+  @media (min-width:860px) { .pair { grid-template-columns:1fr 1fr; } }
+  .phone { background:#111; border-radius:36px; padding:14px 12px 18px; box-shadow:0 16px 40px rgba(0,0,0,.2); }
+  .notch { width:90px; height:14px; background:#000; border-radius:0 0 10px 10px; margin:0 auto 8px; }
+  iframe { width:100%; height:620px; border:0; border-radius:24px; background:#fff; }
+  .label { display:flex; justify-content:space-between; align-items:center; margin:0 0 10px; font-weight:700; }
+  .bad { color:var(--bad); } .good { color:var(--good); }
+  .links { padding:0 20px 50px; max-width:1100px; margin:auto; }
+  a { color:#1a4d8c; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Portfolio sample: make a desktop-only site work on phones</h1>
+  <p>Fictional café. Left is the original layout on a phone (sideways scroll, tiny menu, cramped text). Right is the same content after a mobile-friendly fix.</p>
+</header>
+<section class="pair">
+  <div>
+    <div class="label"><span class="bad">Before — broken on mobile</span><a href="before.html">Open full page</a></div>
+    <div class="phone"><div class="notch"></div><iframe src="before.html" title="Broken mobile version"></iframe></div>
+  </div>
+  <div>
+    <div class="label"><span class="good">After — clear on a phone</span><a href="after.html">Open full page</a></div>
+    <div class="phone"><div class="notch"></div><iframe src="after.html" title="Fixed mobile version"></iframe></div>
+  </div>
+</section>
+<div class="links">
+  <p>This is a Fiverr portfolio sample, not a real business. Open the after page on your phone to tap the menu, form and buttons.</p>
+</div>
+</body>
+</html>

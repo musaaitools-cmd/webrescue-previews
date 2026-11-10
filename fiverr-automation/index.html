@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>LeadPipe sample — form to Google Sheets and email</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root { --navy:#0f2744; --teal:#0f766e; --bg:#eef3f8; --card:#fff; --line:#d5dee8; --muted:#4b5b6e; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:"IBM Plex Sans", system-ui, sans-serif; background:var(--bg); color:var(--navy); }
+  .demo-banner { background:var(--navy); color:#e8eef6; font-size:12px; text-align:center; padding:8px 14px; }
+  .wrap { max-width:1120px; margin:auto; padding:28px 16px 60px; }
+  h1 { font-size:clamp(1.6rem, 4vw, 2.2rem); margin:0 0 8px; }
+  .lead { color:var(--muted); max-width:46rem; }
+  .flow { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:20px 0 28px; font-family:"IBM Plex Mono", monospace; font-size:13px; }
+  .flow span { background:#fff; border:1px solid var(--line); border-radius:999px; padding:8px 12px; }
+  .flow b { color:var(--teal); }
+  .grid { display:grid; gap:16px; }
+  @media(min-width:900px){ .grid { grid-template-columns: .9fr 1.1fr; } }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:18px; }
+  h2 { font-size:1.05rem; margin:0 0 14px; }
+  label { display:block; font-size:.85rem; font-weight:600; margin:10px 0 4px; }
+  input, textarea, select { width:100%; font:inherit; padding:10px 12px; border:1px solid var(--line); border-radius:10px; }
+  button { margin-top:14px; background:var(--teal); color:#fff; border:0; border-radius:10px; padding:11px 16px; font:inherit; font-weight:700; cursor:pointer; width:100%; }
+  button:disabled { opacity:.6; }
+  table { width:100%; border-collapse:collapse; font-size:.88rem; }
+  th { background:#e8f4f2; }
+  th, td { border:1px solid var(--line); padding:8px; text-align:left; }
+  .sheet-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+  .tab { font-family:"IBM Plex Mono", monospace; font-size:12px; background:#e8f4f2; padding:4px 8px; border-radius:6px; }
+  .mail { background:#f7fafc; border:1px solid var(--line); border-radius:12px; padding:12px; margin-top:14px; font-size:.9rem; white-space:pre-wrap; min-height:8rem; }
+  .flash { outline:2px solid var(--teal); }
+  a { color:var(--teal); }
+</style>
+</head>
+<body>
+<div class="demo-banner">Fiverr sample · fictional workflow · submit the form to see a new Google Sheets row and an email alert</div>
+<main class="wrap">
+  <h1>Form or API → Google Sheets → email alert</h1>
+  <p class="lead">This is a working demo of the Standard package. In a real job the same flow runs in Zapier, Make, or Google Apps Script on your accounts. Nothing here is sent to a live inbox.</p>
+  <div class="flow">
+    <span>1. Website form or API</span><b>→</b>
+    <span>2. Zapier / Make / Apps Script</span><b>→</b>
+    <span>3. New row in Google Sheets</span><b>+</b>
+    <span>4. Email you the lead</span>
+  </div>
+  <div class="grid">
+    <section class="card">
+      <h2>Oak &amp; Ivy Interiors — contact form</h2>
+      <form id="lead">
+        <label for="name">Name</label>
+        <input id="name" name="name" required placeholder="Jordan Ellis">
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" required placeholder="jordan@email.com">
+        <label for="phone">Phone</label>
+        <input id="phone" name="phone" placeholder="+1 512 555 0194">
+        <label for="need">What do you need?</label>
+        <select id="need" name="need">
+          <option>Living room refresh</option>
+          <option>Full home consult</option>
+          <option>Office design</option>
+        </select>
+        <label for="msg">Message</label>
+        <textarea id="msg" name="message" rows="3" placeholder="Looking for a quote next month"></textarea>
+        <button type="submit" id="go">Send enquiry</button>
+      </form>
+    </section>
+    <section class="card">
+      <div class="sheet-head">
+        <h2>Google Sheet · Leads</h2>
+        <span class="tab">leads.xlsx preview</span>
+      </div>
+      <div style="overflow:auto">
+        <table>
+          <thead>
+            <tr><th>Timestamp</th><th>Name</th><th>Email</th><th>Phone</th><th>Need</th><th>Message</th><th>Status</th></tr>
+          </thead>
+          <tbody id="rows">
+            <tr>
+              <td>2026-11-09 14:22</td><td>Priya Shah</td><td>priya@northloom.co</td><td>+44 7700 900182</td>
+              <td>Office design</td><td>Need a moodboard for a 12-desk studio</td><td>New</td>
+            </tr>
+            <tr>
+              <td>2026-11-10 09:05</td><td>Chris Navarro</td><td>chris@navarro.home</td><td>+1 415 555 0133</td>
+              <td>Living room refresh</td><td>Sofa + lighting only</td><td>New</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <h2 style="margin-top:18px">Email alert that would be sent to you</h2>
+      <div class="mail" id="mail">Waiting for a new form submission…</div>
+      <p><a href="sample-leads.txt" download>Download a sample CSV</a> of the same sheet format.</p>
+    </section>
+  </div>
+</main>
+<script>
+function stamp(){
+  const d=new Date();
+  const p=n=>String(n).padStart(2,'0');
+  return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+' '+p(d.getHours())+':'+p(d.getMinutes());
+}
+document.getElementById('lead').onsubmit=e=>{
+  e.preventDefault();
+  const f=e.target;
+  const data={
+    time:stamp(),
+    name:f.name.value.trim(),
+    email:f.email.value.trim(),
+    phone:f.phone.value.trim()||'—',
+    need:f.need.value,
+    message:f.message.value.trim()||'—'
+  };
+  const tr=document.createElement('tr');
+  tr.innerHTML=[data.time,data.name,data.email,data.phone,data.need,data.message,'New'].map(v=>'<td>'+esc(v)+'</td>').join('');
+  document.getElementById('rows').appendChild(tr);
+  tr.classList.add('flash');
+  document.getElementById('mail').textContent =
+    ['To: you@yourbusiness.com','Subject: New lead — '+data.name+' ('+data.need+')','','A new enquiry just landed in your Google Sheet.','','Name: '+data.name,'Email: '+data.email,'Phone: '+data.phone,'Need: '+data.need,'Message: '+data.message,'Time: '+data.time,'','Open the Leads sheet to follow up.'].join('\n');
+  f.reset();
+  const btn=document.getElementById('go');
+  btn.textContent='Added to the sheet and email preview';
+  setTimeout(()=>btn.textContent='Send enquiry', 2200);
+};
+window.addEventListener('DOMContentLoaded', () => {
+  if (new URLSearchParams(location.search).get('shot') !== '1') return;
+  document.getElementById('name').value = 'Alex Rivera';
+  document.getElementById('email').value = 'alex@riverastudio.com';
+  document.getElementById('phone').value = '+1 206 555 0142';
+  document.getElementById('need').value = 'Full home consult';
+  document.getElementById('msg').value = 'Need a quote for a 3-bed remodel in April.';
+  document.getElementById('lead').requestSubmit();
+});
+function esc(t){ return String(t).replace(/[&<>]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])); }
+</script>
+</body>
+</html>

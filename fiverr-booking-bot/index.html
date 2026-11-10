@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Lumen Hair Studio — AI booking chatbot sample</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --ink:#1b1412; --muted:#6b5f5a; --blush:#f4e6e1; --rose:#c46a55; --ink2:#2a211e; --paper:#fffaf8; --line:#eadfd9; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:Outfit, system-ui, sans-serif; background:var(--paper); color:var(--ink); }
+  .demo-banner { background:var(--ink); color:#f8efe9; font-size:12px; text-align:center; padding:8px 14px; }
+  header { display:flex; justify-content:space-between; align-items:center; padding:16px 20px; border-bottom:1px solid var(--line); }
+  .logo { font-family:"Cormorant Garamond", Georgia, serif; font-size:1.6rem; font-weight:700; }
+  .wrap { max-width:980px; margin:auto; padding:32px 20px 120px; }
+  h1 { font-family:"Cormorant Garamond", Georgia, serif; font-size:clamp(2.2rem, 7vw, 4rem); line-height:1.05; margin:0 0 12px; }
+  .lead { color:var(--muted); font-size:1.1rem; max-width:36rem; }
+  .services { display:grid; gap:12px; margin-top:32px; }
+  @media(min-width:700px){ .services { grid-template-columns:repeat(3,1fr); } }
+  .svc { background:#fff; border:1px solid var(--line); border-radius:16px; padding:18px; }
+  .svc h2 { font-size:1.05rem; margin:0 0 6px; }
+  .svc p { margin:0; color:var(--muted); }
+  .price { color:var(--rose); font-weight:700; margin-top:8px !important; }
+  #openChat { position:fixed; right:20px; bottom:20px; background:var(--ink2); color:#fff; border:0; border-radius:999px; padding:14px 18px; font:inherit; font-weight:700; cursor:pointer; box-shadow:0 10px 24px rgba(0,0,0,.2); z-index:20; }
+  .chat { position:fixed; right:20px; bottom:80px; width:min(360px, calc(100vw - 24px)); height:520px; background:#fff; border:1px solid var(--line); border-radius:20px; display:none; flex-direction:column; overflow:hidden; z-index:21; box-shadow:0 18px 50px rgba(0,0,0,.2); }
+  .chat.open { display:flex; }
+  .chat-h { background:var(--ink2); color:#fff; padding:14px 16px; display:flex; justify-content:space-between; align-items:center; }
+  .chat-h strong { display:block; }
+  .chat-h span { font-size:12px; opacity:.8; }
+  .chat-h button { background:none; border:0; color:#fff; font-size:20px; cursor:pointer; }
+  .log { flex:1; overflow:auto; padding:14px; display:flex; flex-direction:column; gap:10px; background:var(--blush); }
+  .bubble { max-width:85%; padding:10px 12px; border-radius:14px; font-size:.95rem; line-height:1.4; }
+  .bot { background:#fff; align-self:flex-start; }
+  .me { background:var(--ink2); color:#fff; align-self:flex-end; }
+  .choices { display:flex; flex-wrap:wrap; gap:6px; padding:10px 12px; border-top:1px solid var(--line); background:#fff; }
+  .choices button, .chat form button { background:#fff; border:1px solid var(--line); border-radius:999px; padding:7px 11px; font:inherit; font-size:.85rem; cursor:pointer; }
+  .chat form { display:flex; gap:6px; padding:10px; border-top:1px solid var(--line); }
+  .chat input { flex:1; font:inherit; padding:8px 10px; border:1px solid var(--line); border-radius:10px; }
+  .bookings { margin-top:36px; background:#fff; border:1px dashed var(--line); border-radius:16px; padding:18px; }
+  .bookings table { width:100%; border-collapse:collapse; font-size:.95rem; }
+  .bookings td, .bookings th { text-align:left; padding:8px 6px; border-bottom:1px solid var(--line); }
+</style>
+</head>
+<body>
+<div class="demo-banner">Fiverr sample · fictional salon · try the booking chatbot in the corner · bookings stay on this page only</div>
+<header>
+  <div class="logo">Lumen</div>
+  <div>Austin, TX · Tue–Sat</div>
+</header>
+<main class="wrap">
+  <h1>Colour, cuts and calm appointments.</h1>
+  <p class="lead">Lumen Hair Studio is a fictional salon built to show a website chatbot that answers FAQs and takes bookings. Open the chat and try “Book a cut” or ask about prices and hours.</p>
+  <div class="services">
+    <div class="svc"><h2>Signature cut</h2><p>Consultation, cut and style.</p><p class="price">$85 · 60 min</p></div>
+    <div class="svc"><h2>Colour refresh</h2><p>Gloss, gloss-plus-cut, or full colour.</p><p class="price">from $140 · 90–150 min</p></div>
+    <div class="svc"><h2>Blowout</h2><p>Same-day finish when the book is open.</p><p class="price">$55 · 45 min</p></div>
+  </div>
+  <section class="bookings">
+    <h2>Demo booking log</h2>
+    <p>New chatbot bookings appear here, the way they would land in Google Sheets or your inbox.</p>
+    <table><thead><tr><th>Name</th><th>Service</th><th>When</th><th>Phone</th></tr></thead><tbody id="rows"><tr id="empty"><td colspan="4">No bookings yet — try the chatbot.</td></tr></tbody></table>
+  </section>
+</main>
+<button id="openChat" type="button">Chat with Lumen</button>
+<div class="chat" id="chat" role="dialog" aria-label="Booking chatbot">
+  <div class="chat-h">
+    <div><strong>Lumen assistant</strong><span>Answers instantly · demo bot</span></div>
+    <button type="button" id="closeChat" aria-label="Close">×</button>
+  </div>
+  <div class="log" id="log"></div>
+  <div class="choices" id="choices"></div>
+  <form id="typebox" style="display:none"><input id="typed" placeholder="Type a question" autocomplete="off"><button type="submit">Send</button></form>
+</div>
+<script>
+const logEl = document.getElementById('log');
+const choicesEl = document.getElementById('choices');
+const typebox = document.getElementById('typebox');
+const state = { step:'home', service:null, day:null, time:null, name:'', phone:'' };
+const services = {
+  cut: { name:'Signature cut', mins:60, price:'$85' },
+  colour: { name:'Colour refresh', mins:120, price:'from $140' },
+  blowout: { name:'Blowout', mins:45, price:'$55' }
+};
+function add(who, text){
+  const d=document.createElement('div');
+  d.className='bubble '+who;
+  d.textContent=text;
+  logEl.appendChild(d);
+  logEl.scrollTop=logEl.scrollHeight;
+}
+function setChoices(items, showType){
+  choicesEl.innerHTML='';
+  items.forEach(([label, fn])=>{
+    const b=document.createElement('button');
+    b.type='button'; b.textContent=label; b.onclick=fn;
+    choicesEl.appendChild(b);
+  });
+  typebox.style.display = showType ? 'flex' : 'none';
+}
+function home(){
+  state.step='home';
+  add('bot','Hi, I am the Lumen booking assistant (demo). I can share hours and prices, or book a chair.');
+  setChoices([
+    ['Book an appointment', ()=>{ me('Book an appointment'); pickService(); }],
+    ['Hours', ()=>{ me('What are your hours?'); add('bot','We are open Tuesday to Friday, 10:00–7:00, and Saturday 9:00–4:00. Closed Sunday and Monday.'); homeMore(); }],
+    ['Prices', ()=>{ me('What are your prices?'); add('bot','Signature cut $85 (60 min). Colour refresh from $140 (90–150 min). Blowout $55 (45 min).'); homeMore(); }],
+    ['Where are you?', ()=>{ me('Where are you?'); add('bot','1206 South Lamar, Austin, TX. Street parking and a small lot behind the studio.'); homeMore(); }]
+  ], true);
+}
+function homeMore(){ setChoices([['Book an appointment', ()=>{ me('Book an appointment'); pickService(); }],['Ask something else', home]], true); }
+function pickService(){
+  state.step='service';
+  add('bot','Which service would you like?');
+  setChoices([
+    ['Signature cut $85', ()=>{ chooseService('cut'); }],
+    ['Colour refresh', ()=>{ chooseService('colour'); }],
+    ['Blowout $55', ()=>{ chooseService('blowout'); }]
+  ]);
+}
+function chooseService(key){ state.service=key; me(services[key].name); pickDay(); }
+function pickDay(){
+  add('bot','Nice. Which day works? These are open demo slots.');
+  const days=['Thu 12 Nov','Fri 13 Nov','Sat 14 Nov'];
+  setChoices(days.map(d=>[d, ()=>{ state.day=d; me(d); pickTime(); }]));
+}
+function pickTime(){
+  add('bot','What time on '+state.day+'?');
+  const times = state.service==='colour' ? ['10:00','12:30'] : ['10:00','11:30','2:00','4:30'];
+  setChoices(times.map(t=>[t, ()=>{ state.time=t; me(t); askName(); }]));
+}
+function askName(){
+  add('bot','I can hold '+services[state.service].name+' on '+state.day+' at '+state.time+'. What name should I use?');
+  setChoices([]); typebox.style.display='flex';
+  state.step='name';
+}
+function askPhone(){
+  add('bot','Thanks, '+state.name+'. What is the best phone number for a confirmation?');
+  state.step='phone';
+}
+function confirm(){
+  const s=services[state.service];
+  add('bot','Booked: '+s.name+' for '+state.name+' on '+state.day+' at '+state.time+'. A confirmation would now go to your sheet or inbox. This is a demo, so it is only saved on this page.');
+  const tb=document.getElementById('rows');
+  document.getElementById('empty')?.remove();
+  const tr=document.createElement('tr');
+  tr.innerHTML='<td>'+esc(state.name)+'</td><td>'+esc(s.name)+'</td><td>'+esc(state.day+' · '+state.time)+'</td><td>'+esc(state.phone)+'</td>';
+  tb.appendChild(tr);
+  state.step='done';
+  setChoices([['Book another', ()=>{ state.service=state.day=state.time=null; state.name=state.phone=''; home(); }]], false);
+}
+function esc(t){ return String(t).replace(/[&<>]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])); }
+function me(t){ add('me', t); }
+function answerFree(q){
+  const s=q.toLowerCase();
+  if(/hour|open|close/.test(s)) add('bot','Tuesday to Friday 10:00–7:00, Saturday 9:00–4:00. Closed Sunday and Monday.');
+  else if(/price|cost|how much|rate/.test(s)) add('bot','Cuts are $85, blowouts $55, colour from $140.');
+  else if(/park|address|where|locat/.test(s)) add('bot','1206 South Lamar, Austin, TX, with a small lot behind the studio.');
+  else if(/book|appoint|cut|colour|color|blow/.test(s)) { pickService(); return; }
+  else add('bot','I can help with hours, prices, location, or a booking. Try one of the buttons below.');
+  homeMore();
+}
+document.getElementById('openChat').onclick=()=>{ document.getElementById('chat').classList.add('open'); if(!logEl.childElementCount) home(); };
+document.getElementById('closeChat').onclick=()=>document.getElementById('chat').classList.remove('open');
+document.getElementById('typebox').onsubmit=e=>{
+  e.preventDefault();
+  const v=document.getElementById('typed').value.trim();
+  if(!v) return;
+  document.getElementById('typed').value='';
+  me(v);
+  if(state.step==='name'){ state.name=v; askPhone(); }
+  else if(state.step==='phone'){ state.phone=v; confirm(); }
+  else answerFree(v);
+};
+
+window.addEventListener('DOMContentLoaded', () => {
+  if (new URLSearchParams(location.search).get('shot') !== '1') return;
+  document.getElementById('openChat').click();
+  // walk a finished booking for the screenshot
+  const clickLabel = (s) => {
+    const b = [...document.querySelectorAll('#choices button')].find(x => x.textContent.includes(s));
+    if (b) b.click();
+  };
+  clickLabel('Book an appointment');
+  clickLabel('Signature cut');
+  clickLabel('Fri 13 Nov');
+  clickLabel('11:30');
+  const typed = document.getElementById('typed');
+  const form = document.getElementById('typebox');
+  typed.value = 'Maya Chen';
+  form.requestSubmit();
+  typed.value = '+1 512 555 0177';
+  form.requestSubmit();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Willow &amp; Bean Café — Portland (mobile-friendly sample)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --ink:#241c14; --muted:#5c5348; --cream:#f6efe4; --paper:#fffaf3; --bean:#6b3f24; --leaf:#3d5a45; --line:#e4d8c6; }
+  * { box-sizing:border-box; }
+  html,body { margin:0; padding:0; }
+  body { font-family:"Source Sans 3", system-ui, sans-serif; background:var(--paper); color:var(--ink); line-height:1.55; }
+  .demo-banner { background:#241c14; color:#f6efe4; font-size:12px; text-align:center; padding:8px 14px; }
+  .demo-banner a { color:#fff; }
+  header { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:14px 20px; background:var(--paper); position:sticky; top:0; z-index:10; border-bottom:1px solid var(--line); }
+  .logo { font-family:Fraunces, Georgia, serif; font-weight:700; font-size:1.15rem; text-decoration:none; color:var(--ink); }
+  .nav-toggle { display:none; background:none; border:1px solid var(--line); border-radius:8px; padding:8px 10px; font:inherit; }
+  nav { display:flex; gap:18px; align-items:center; }
+  nav a { color:var(--muted); text-decoration:none; font-weight:600; font-size:.95rem; }
+  nav a.btn, .btn { background:var(--bean); color:#fff !important; padding:10px 16px; border-radius:999px; text-decoration:none; display:inline-block; font-weight:700; border:0; }
+  .hero { padding:28px 20px 40px; display:grid; gap:24px; }
+  .hero-art { border-radius:22px; min-height:220px; background:
+      radial-gradient(circle at 20% 20%, #e8c9a4, transparent 50%),
+      radial-gradient(circle at 80% 10%, #c9d7c4, transparent 45%),
+      linear-gradient(160deg, #8b5a32, #4a2e1c 60%, #2c2416);
+    display:flex; align-items:flex-end; padding:22px; color:#fff; }
+  .hero-art span { background:rgba(0,0,0,.35); padding:8px 12px; border-radius:999px; font-size:.85rem; }
+  h1 { font-family:Fraunces, Georgia, serif; font-size:clamp(2rem, 7vw, 3.4rem); line-height:1.1; margin:0 0 12px; }
+  .lead { font-size:1.08rem; color:var(--muted); margin:0 0 20px; }
+  .grid { padding:0 20px 48px; display:grid; gap:16px; }
+  .card { background:#fff; border:1px solid var(--line); border-radius:18px; padding:20px; }
+  .card h2 { font-family:Fraunces, Georgia, serif; margin:0 0 12px; font-size:1.35rem; }
+  .menu { width:100%; border-collapse:collapse; }
+  .menu td { padding:10px 0; border-bottom:1px solid var(--line); vertical-align:top; }
+  .menu td:last-child { text-align:right; font-weight:700; white-space:nowrap; padding-left:12px; }
+  .item-name { font-weight:700; display:block; }
+  .item-note { color:var(--muted); font-size:.9rem; }
+  address { font-style:normal; color:var(--muted); }
+  form { display:flex; flex-direction:column; gap:10px; }
+  input { font:inherit; padding:12px 14px; border:1px solid var(--line); border-radius:12px; width:100%; }
+  footer { padding:24px 20px 40px; color:var(--muted); font-size:.9rem; border-top:1px solid var(--line); }
+  @media (min-width:800px) {
+    .hero, .grid, header, footer { padding-left:40px; padding-right:40px; max-width:1100px; margin-left:auto; margin-right:auto; }
+    header { max-width:none; }
+    .hero { grid-template-columns: 1.1fr .9fr; align-items:center; }
+    .hero-art { min-height:340px; }
+    .grid { grid-template-columns: 1.2fr .8fr; }
+  }
+  @media (max-width:799px) {
+    .nav-toggle { display:block; }
+    nav { display:none; position:absolute; top:62px; left:0; right:0; background:#fff; flex-direction:column; align-items:stretch; padding:12px 20px 20px; border-bottom:1px solid var(--line); gap:8px; }
+    nav.open { display:flex; }
+    nav a { padding:10px 0; }
+    nav a.btn { text-align:center; }
+  }
+</style>
+</head>
+<body>
+<div class="demo-banner">Fiverr sample · fictional café · after: mobile-friendly layout · <a href="index.html">Back to comparison</a></div>
+<header>
+  <a class="logo" href="#">Willow &amp; Bean</a>
+  <button class="nav-toggle" type="button" aria-label="Menu" onclick="document.getElementById('nav').classList.toggle('open')">Menu</button>
+  <nav id="nav">
+    <a href="#menu">Menu</a>
+    <a href="#visit">Hours</a>
+    <a href="#visit">Catering</a>
+    <a class="btn" href="#visit">Book the back room</a>
+  </nav>
+</header>
+<section class="hero">
+  <div>
+    <h1>Coffee, pastry and slow mornings in Portland.</h1>
+    <p class="lead">Neighborhood café on Division Street. House bread, rotating single-origin coffee, and a quiet back room for small gatherings.</p>
+    <a class="btn" href="#menu">See this week's menu</a>
+  </div>
+  <div class="hero-art" role="img" aria-label="Warm café interior illustration"><span>Open today until 4:00</span></div>
+</section>
+<section class="grid" id="menu">
+  <article class="card">
+    <h2>This week's menu</h2>
+    <table class="menu">
+      <tr><td><span class="item-name">House drip</span><span class="item-note">Rotating single origin</span></td><td>$3.50</td></tr>
+      <tr><td><span class="item-name">Oat latte</span><span class="item-note">House almond-oat milk</span></td><td>$5.25</td></tr>
+      <tr><td><span class="item-name">Seasonal cardamom bun</span><span class="item-note">Baked each morning</span></td><td>$4.75</td></tr>
+      <tr><td><span class="item-name">Avocado rye</span><span class="item-note">Chili honey and herbs</span></td><td>$11.00</td></tr>
+    </table>
+  </article>
+  <article class="card" id="visit">
+    <h2>Visit us</h2>
+    <address>482 Division Street<br>Portland, OR 97214<br>Mon–Fri 7:00–4:00<br>Sat–Sun 8:00–3:00</address>
+    <p>Street parking. Dogs welcome on the patio.</p>
+    <form onsubmit="event.preventDefault(); this.querySelector('button').textContent='You\'re on the list';">
+      <label for="em">Pastry-drop emails</label>
+      <input id="em" type="email" required placeholder="you@email.com">
+      <button class="btn" type="submit">Join the list</button>
+    </form>
+  </article>
+</section>
+<footer>© Willow &amp; Bean Café · (503) 555-0148 · Fictional business built as a Fiverr portfolio sample for a mobile-friendly website fix.</footer>
+</body>
+</html>
